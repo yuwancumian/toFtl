@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "toFtl": "./toFtl.js"
+    "toFtl": "./toFtl.js",
+    "toLayout": "./toLayout.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

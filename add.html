@@ -1,0 +1,281 @@
+<@override name="content">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<select name="dept_list" id="dept_list" class="hidden">
+		{:fill_option($dept_list)}
+	</select>
+	{:W('PageHeader/popup_add',array('name'=>'添加用户','search'=>'S'))}
+	<div class="row">
+		<div class="col-xs-12 white-bg">
+			<form id="form_data" name="form_data" method="post" class="form-horizontal">
+				<input type="hidden" name="opmode" id="opmode" value="add">
+				<table class="container table add_user_table_info table_info_w_90 table_85p" >
+					<tr>
+						<th>
+						<nobr>
+							登录账号<red>*</red>
+						</nobr></th>
+						<td>
+						<input class="form-control" type="text" id="emp_no" name="emp_no"  check="require" msg="请输入登录账号">
+						</td>
+					</tr>
+					<tr>
+						<th>用户编号</th>
+						<td>
+						<input class="form-control" type="text" id="user_num" name="user_num" class="input-sm">
+						</td>
+					</tr>
+					<tr>
+						<th>姓名<red>*</red></th>
+						<td >
+						<input  class="form-control" type="text" id="name" name="name" check="require" msg="请输入姓名">
+						</td>
+					</tr>
+					<tr>
+						<th>性别</th>
+						<td >
+						<select name="sex" id="sex" class="form-control">
+							<option  value="male">男</option>
+							<option value="female">女</option>
+						</select></td>
+					</tr>
+					<tr>
+						<th>生日</th>
+						<td >
+						<input type="text" id="birthday" name="birthday" class="input-date form-control">
+						</td>
+					</tr>
+					<tr>
+						<th>所属实验室<red>*</red></th>
+						<td >
+						<if condition="$Think.session.position_id eq '1'">
+							<div class="input-group ">
+								<input class="form-control organinput" name="dept_name" value="{$Think.session.dept_name}" id="dept_name" type="text" msg="请选择所属实验室" check="require" readonly="readonly" />
+								<input name="dept_id" id="dept_id" type="hidden" value="{$Think.session.dept_id}" onchange="chgDept(this.value)"/>
+								<div class="input-group-btn">
+									<a class="btn btn-sm btn-primary" onclick="select_dept();" > <i class="fa fa-search" ></i> </a>
+								</div>
+							</div>
+						<else/>
+							<input class="form-control" name="dept_name" value="{$Think.session.dept_name}" id="dept_name" type="text" msg="请选择所属实验室" check="require" readonly="readonly" />
+							<input name="dept_id" id="dept_id" type="hidden" value="{$Think.session.dept_id}" onchange="chgDept(this.value)"/>
+						</if>
+					</td>
+					</tr>
+					<tr>
+						<th >研究方向</th>
+						<td >
+							<select name="directionid" id="directionid" class="form-control" msg="请选择研究方向">
+								<option value="0">选择研究方向</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th >职称等级</th>
+						<td >
+							<select name="professional" id="professional" class="form-control" msg="请选择职称等级">
+								<option value="">选择职称等级</option>
+								<foreach name="selectOptionList" item="vo">
+									<if condition="$vo.selectcode eq 'professional'">
+										<option value="{$vo.selectvalue}">{$vo.selectname}</option>
+									</if>
+								</foreach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th >审核权限<red>*</red></th>
+						<td>
+						<select name="position_id" id="position_id" class="form-control" msg="请选择审核权限" check="require" onchange="chgPosition(this.value)">
+							<option value="">选择审核权限</option>
+							{:fill_option($position_list)}
+						</select></td>
+					</tr>
+					<!-- <tr>
+						<th>
+						<nobr>
+							办公室电话
+						</nobr></th>
+						<td>
+						<input type="text" id="office_tel" name="office_tel" class="form-control">
+						</td>
+						<th>
+						<nobr>
+							移动电话
+						</nobr></th>
+						<td>
+						<input type="text" id="mobile_tel" name="mobile_tel" class="form-control">
+						</td>
+					</tr>  -->
+					<!-- <tr> -->
+						<!-- <th>电子邮箱</th>
+						<td>
+						<input type="text" id="email" name="email" class="form-control">
+						</td> -->
+						<!-- <th>状态</th>
+						<td>
+						<select class="form-control"  name="is_del" id="is_del">
+							<option  value="0">在职</option>
+							<option value="1">离职</option>
+						</select></td> -->
+					<!-- </tr> -->
+					<!-- <tr>
+						<th>
+						<nobr>
+							备注
+						</nobr></th>
+						<td colspan="3">
+						<input type="text" id="duty" name="duty" class="form-control">
+						</td>
+					</tr> -->
+					<tr>
+						<th class="domain">所属领域</th>
+						<td class="domain">
+							<select name="domainid" id="domainid" class="form-control" msg="请选择所属领域">
+								<option value="">选择所属领域</option>
+								<foreach name="selectOptionList" item="vo">
+									<if condition="$vo.selectcode eq 'domaintype'">
+										<option value="{$vo.selectvalue}">{$vo.selectname}</option>
+									</if>
+								</foreach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>职务</th>
+						<td>
+							<select name="duties" id="duties" class="form-control" msg="请选择实验室职务">
+								<option value="">选择实验室职务</option>
+								<foreach name="selectOptionList" item="vo">
+									<if condition="$vo.selectcode eq 'duties'">
+										<option value="{$vo.selectvalue}">{$vo.selectname}</option>
+									</if>
+								</foreach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>工作性质</th>
+						<td>
+							<select name="works" id="works" class="form-control" msg="请选择工作性质">
+								<option value="">选择工作性质</option>
+								<foreach name="selectOptionList" item="vo">
+									<if condition="$vo.selectcode eq 'works'">
+										<option value="{$vo.selectvalue}">{$vo.selectname}</option>
+									</if>
+								</foreach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>最后学位</th>
+						<td>
+							<select name="degree" id="degree" class="form-control" msg="请选择学位">
+								<option value="">选择学位</option>
+								<foreach name="selectOptionList" item="vo">
+									<if condition="$vo.selectcode eq 'degree'">
+										<option value="{$vo.selectvalue}">{$vo.selectname}</option>
+									</if>
+								</foreach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>在职日期</th>
+						<td>
+							<input type="text" id="dutybegin1" name="dutybegin" style="width:100px;float:left" readonly="readonly" class="white-date form-control" value="{$data.dutybegin|to_date='Y-m'}"><span style="display:inline-block;line-height:32px;float: left;">－</span><input type="text" readonly="readonly" id="dutyend1" name="dutyend" style="width:100px;float:left" class="white-date form-control" value="{$data.dutyend|to_date='Y-m'}"></td>
+						</td>
+					</tr>
+
+					<tr>
+						<th>获得最后学位院校</th>
+						<td>
+							<input type="text" class="form-control input-sm" id="graduateby" name="graduateby" value="{$data.graduateby}">
+						</td>
+					</tr>
+					<tr>
+						<th>依托单位职务</th>
+						<td>
+							<input type="text" class="form-control input-sm" id="parttimejob" name="parttimejob" value="{$data.parttimejob}">
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" class="center">
+							<a onclick="save();" class="btn btn-sm btn-primary">新增</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</@override>
+<@override name="js">
+	<script type="text/javascript">
+
+		var picker1 = $('#dutybegin1').datetimepicker({
+			format: 'YYYY-MM',
+			locale : 'zh-cn',
+			ignoreReadonly : true,
+			useCurrent:false,
+			maxDate:false,
+		});
+		var picker2 = $('#dutyend1').datetimepicker({
+			format: 'YYYY-MM',
+			locale : 'zh-cn',
+			ignoreReadonly : true,
+			useCurrent:false,
+			minDate:false,
+		});
+
+		picker2.on("dp.change",function(e){
+			picker1.data('DateTimePicker').maxDate(e.date);
+		})
+		picker1.on("dp.change",function(e){
+			picker2.data('DateTimePicker').minDate(e.date);
+		})
+		function chgDept(val)
+		{
+			directionid.length=1;
+			sendAjax("{:U('read')}", "id=" + val, function(result) {
+				if(result.data.directionList!=null)
+				{
+					for(var i=0;i<result.data.directionList.length;i++)
+					{
+						var option=new Option(result.data.directionList[i].directionname,result.data.directionList[i].id)
+						$("#directionid").append(option);
+					}
+				}
+			});
+		}
+
+		function chgPosition(val)
+		{
+			if(val==3)
+				$(".domain").show();
+			else
+				$(".domain").hide();
+		}
+		function select_dept() {
+			winopen("{:U('dept/winpop2')}", 840, 500);
+		}
+
+		function save() {
+			if (check_form("form_data")) {
+				if($("#birthday").val()=="") $("#birthday").val(null);
+				var vars = $("#form_data").serialize();
+				sendAjax("{:U('save')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							parent.location.reload(true);
+							myclose();
+						});
+					} else {
+						ui_error(data.info);
+					}
+				});
+			}
+		}
+
+		var direction='{$direction}';
+	</script>
+</@override>
