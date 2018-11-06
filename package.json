@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/yourGithubUserName/toFtl",
   "dependencies": {
-    "shelljs": "^0.8.2"
+    "shelljs": "^0.8.2",
+    "split": "^1.0.1"
   }
 }
