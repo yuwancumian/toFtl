@@ -5,7 +5,8 @@
   "main": "index.js",
   "bin": {
     "toFtl": "./toFtl.js",
-    "toLayout": "./toLayout.js"
+    "toLayout": "./toLayout.js",
+    "toVal": "./toVal.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/yourGithubUserName/toFtl",
   "dependencies": {
+    "chalk": "^2.4.1",
     "shelljs": "^0.8.2",
     "split": "^1.0.1"
   }
